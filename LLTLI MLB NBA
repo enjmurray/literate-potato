@@ -1,0 +1,565 @@
+#Initial Files
+all_sports_precise <- all_sports_precise_2_ %>%
+  distinct (Relinquished, body_part_2, season, sport, .keep_all = T)
+
+rm(all_sports_precise_FINAL)
+
+all_sports_precise <- all_sports_precise %>% 
+  filter(season != 0)
+
+all_sports_precise <- all_sports_precise %>% 
+  filter(Date_2 > "2007-3-1")
+
+all_sports_precise <- all_sports_precise %>% 
+  filter(season != "2006-2007")
+
+#SPLIT BY SPORT
+base_precise <- all_sports_precise %>% 
+  filter(sport == "Baseball")
+
+basket_precise <- all_sports_precise %>% 
+  filter(sport == "Basketball")
+#Baseball Analysis 
+body_count_year <- base_precise %>%
+  group_by(season) %>% 
+  count(body_part_2)
+
+body_count_year$body_part_2 <- toTitleCase(body_count_year$body_part_2)
+
+body_count_year$Incidence <- 0 
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2005, 
+                            round((n/1237)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2006, 
+                            round((n/1242)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2007, 
+                            round((n/1278)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2008, 
+                            round((n/1291)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2009, 
+                            round((n/1266)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2010, 
+                            round((n/1249)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2011, 
+                            round((n/1295)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2012, 
+                            round((n/1284)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2013, 
+                            round((n/1304)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2014, 
+                            round((n/1320)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2015, 
+                            round((n/1349)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2016, 
+                            round((n/1353)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2017, 
+                            round((n/1358)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2018, 
+                            round((n/1379)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2019, 
+                            round((n/1410)*100, digits = 2), 
+                            Incidence))
+
+
+body_count_year <- body_count_year %>%
+  filter(season > 0)
+
+body_count_year <- body_count_year %>% 
+  filter(body_part_2 != "")
+
+body_count_year$sport <- "Baseball"
+
+#Overall Count Analyses
+t <- body_count_year %>% 
+  filter(Incidence > 4) 
+
+Baseball_Injuries_Individual <- body_count_year %>%
+  filter(body_part_2 == "Toe" | body_part_2 == "Foot" | body_part_2 == "Heel" | body_part_2 == "Ankle"
+         | body_part_2 == "Achilles" | body_part_2 == "Shin" | body_part_2 == "Fibula" | body_part_2 == "Calf" |
+           body_part_2 == "Knee" | body_part_2 == "Hamstring" | body_part_2 == "Quadricep" | body_part_2 == "Thigh" | 
+           body_part_2 == "Abductor" | body_part_2 == "Adductor" | body_part_2 == "Hip" |body_part_2 == "Gluteus" | body_part_2 == "Leg" | body_part_2 == "Patella" 
+         &  season > 2006)
+
+#INDIVIDUAL INCIDENCE TO GET THE MEAN
+t_toe_baseball <- body_count_year %>%
+  filter(body_part_2 == "Toe" & season > 2006)
+
+mean(t_toe_baseball$Incidence, na.rm = T) # 0.4330769
+
+t_foot_baseball <- body_count_year %>% 
+  filter(body_part_2 == "Foot" & season > 2006)
+
+mean(t_foot_baseball$Incidence, na.rm = T) #1.276923
+
+t_heel_baseball <- body_count_year %>% 
+  filter(body_part_2 == "Heel" & season > 2006)
+
+mean(t_heel_baseball$Incidence, na.rm = T) #0.2858333
+
+t_ankle_baseball <- body_count_year %>% 
+  filter(body_part_2 == "Ankle" & season > 2006)
+
+mean(t_ankle_baseball$Incidence, na.rm = T) #1.787692
+
+t_achilles_baseball <- body_count_year %>% 
+  filter(body_part_2 == "Achilles" & season > 2006)
+
+mean(t_achilles_baseball$Incidence, na.rm = T) #0.2366667
+
+t_shin_baseball <- body_count_year %>%
+  filter(body_part_2 == "Shin" & season > 2006) 
+
+mean(t_shin_baseball$Incidence, na.rm = T) #0.3346154
+
+t_fibula_baseball <- body_count_year %>% 
+  filter(body_part_2 == "Fibula" & season > 2006)
+
+mean(t_fibula_baseball$Incidence, na.rm = T) #0.075
+
+t_calf_baseball <- body_count_year %>% 
+  filter(body_part_2 == "Calf" & season > 2006) 
+
+mean(t_calf_baseball$Incidence, na.rm = T) #1.164615
+
+t_knee_baseball <- body_count_year %>% 
+  filter(body_part_2 == "Knee" & season > 2006)
+
+mean(t_knee_baseball$Incidence, na.rm = T) #3.453077
+
+t_hamstring_baseball <- body_count_year %>% 
+  filter(body_part_2 == "Hamstring" & season > 2006)
+
+mean(t_hamstring_baseball$Incidence, na.rm = T) #3.841538
+
+t_quadricep_baseball <- body_count_year %>%
+  filter(body_part_2 == "Quadricep" & season > 2006)
+
+mean(t_quadricep_baseball$Incidence, na.rm = T) #1.09
+
+t_thigh_baseball <- body_count_year %>% 
+  filter(body_part_2 == "Thigh" & season > 2006)
+
+mean(t_thigh_baseball$Incidence, na.rm = T) #0.1181818
+
+t_adductor_baseball <- body_count_year %>% 
+  filter(body_part_2 == "Adductor" & season > 2006)
+
+mean(t_adductor_baseball$Incidence, na.rm = T) #1.773846
+
+t_abductor_baseball <- body_count_year %>% 
+  filter(body_part_2 == "Abductor" & season > 2006)
+
+mean(t_abductor_baseball$Incidence, na.rm = T) #0.08
+
+t_hip_baseball <- body_count_year %>%
+  filter(body_part_2 == "Hip" & season > 2006) 
+
+mean(t_hip_baseball$Incidence, na.rm = T) #1.083846
+
+t_gluteus_baseball <- body_count_year %>% 
+  filter(body_part_2 == "Gluteus" & season > 2006)
+
+mean(t_gluteus_baseball$Incidence, na.rm = T) #0.1
+
+t_leg_baseball <- body_count_year %>% 
+  filter(body_part_2 == "Leg" & season > 2006)
+
+mean(t_leg_baseball$Incidence, na.rm = T) # 0.6553846
+
+t_patella_baseball <- body_count_year %>%
+  filter(body_part_2 == "Patella" & season > 2006)
+
+mean(t_patella_baseball$Incidence, na.rm = T) #.08
+
+#Basketball Analysis 
+basket_precise <- all_sports_precise %>% 
+  filter(sport == "Basketball")
+
+body_count_year_basket <- basket_precise %>%
+  group_by(season) %>% 
+  count(body_part_2)
+
+body_count_year_basket$body_part_2 <- toTitleCase(body_count_year_basket$body_part_2)
+
+body_count_year_basket <- body_count_year_basket %>% 
+  filter(season != 0)
+
+body_count_year_basket$Incidence <- 0 
+
+body_count_year_basket <- body_count_year_basket %>% 
+  mutate(Incidence = ifelse(season == "2004-2005", 
+                            round((n/464) *100, digits = 2),
+                            Incidence))
+
+
+body_count_year_basket <- body_count_year_basket %>% 
+  mutate(Incidence = ifelse(season == "2005-2006", 
+                            round((n/458) *100, digits = 2),
+                            Incidence))
+
+body_count_year_basket <- body_count_year_basket %>% 
+  mutate(Incidence = ifelse(season == "2006-2007", 
+                            round((n/458) *100, digits = 2),
+                            Incidence))
+
+body_count_year_basket <- body_count_year_basket %>% 
+  mutate(Incidence = ifelse(season == "2007-2008", 
+                            round((n/451) *100, digits = 2),
+                            Incidence))
+
+body_count_year_basket <- body_count_year_basket %>% 
+  mutate(Incidence = ifelse(season == "2008-2009", 
+                            round((n/445) *100, digits = 2),
+                            Incidence))
+
+body_count_year_basket <- body_count_year_basket %>% 
+  mutate(Incidence = ifelse(season == "2009-2010", 
+                            round((n/442) *100, digits = 2),
+                            Incidence))
+
+body_count_year_basket <- body_count_year_basket %>% 
+  mutate(Incidence = ifelse(season == "2010-2011", 
+                            round((n/452) *100, digits = 2),
+                            Incidence))
+
+body_count_year_basket <- body_count_year_basket %>% 
+  mutate(Incidence = ifelse(season == "2011-2012", 
+                            round((n/478) *100, digits = 2),
+                            Incidence))
+
+body_count_year_basket <- body_count_year_basket %>% 
+  mutate(Incidence = ifelse(season == "2012-2013", 
+                            round((n/469) *100, digits = 2),
+                            Incidence))
+
+body_count_year_basket <- body_count_year_basket %>% 
+  mutate(Incidence = ifelse(season == "2013-2014", 
+                            round((n/482) *100, digits = 2),
+                            Incidence))
+
+body_count_year_basket <- body_count_year_basket %>% 
+  mutate(Incidence = ifelse(season == "2014-2015", 
+                            round((n/492) *100, digits = 2),
+                            Incidence))
+
+body_count_year_basket <- body_count_year_basket %>% 
+  mutate(Incidence = ifelse(season == "2015-2016", 
+                            round((n/476) *100, digits = 2),
+                            Incidence))
+
+body_count_year_basket <- body_count_year_basket %>% 
+  mutate(Incidence = ifelse(season == "2016-2017", 
+                            round((n/486) *100, digits = 2),
+                            Incidence))
+
+body_count_year_basket <- body_count_year_basket %>% 
+  mutate(Incidence = ifelse(season == "2017-2018", 
+                            round((n/540) *100, digits = 2),
+                            Incidence))
+
+body_count_year_basket <- body_count_year_basket %>% 
+  mutate(Incidence = ifelse(season == "2018-2019", 
+                            round((n/530) *100, digits = 2),
+                            Incidence))
+
+body_count_year_basket <- body_count_year_basket %>% 
+  mutate(Incidence = ifelse(season == "2019-2020", 
+                            round((n/498) *100, digits = 2),
+                            Incidence))
+
+body_count_year_basket <- body_count_year_basket %>%
+  filter(season != "2004-2005" | season != "2005-2006" | season != "2006-2007")
+
+body_count_year_basket <- body_count_year_basket %>% 
+  filter(body_part_2 != "")
+
+body_count_year_basket$sport <- "Basketball"
+
+tbasket <- tb <- body_count_year_basket %>% 
+  filter(Incidence > 4) 
+
+t_toe_basketball <- body_count_year_basket %>%
+  filter(body_part_2 == "Toe" & season > 2006)
+
+mean(t_toe_basketball$Incidence, na.rm = T) #1.508462
+
+t_foot_basketball <- body_count_year_basket %>% 
+  filter(body_part_2 == "Foot" & season > 2006)
+
+mean(t_foot_basketball$Incidence, na.rm = T) #4.114615
+
+t_heel_basketball <- body_count_year_basket %>% 
+  filter(body_part_2 == "Heel" & season > 2006)
+
+mean(t_heel_basketball$Incidence, na.rm = T) #0.6261538
+
+t_ankle_basketball <- body_count_year_basket %>% 
+  filter(body_part_2 == "Ankle" & season > 2006)
+
+mean(t_ankle_basketball$Incidence, na.rm = T) #13.80923
+
+t_achilles_basketball <- body_count_year_basket %>% 
+  filter(body_part_2 == "Achilles" & season > 2006)
+
+mean(t_achilles_basketball$Incidence, na.rm = T) #1.467692
+
+t_shin_basketball <- body_count_year_basket %>%
+  filter(body_part_2 == "Shin" & season > 2006) 
+
+mean(t_shin_basketball$Incidence, na.rm = T) #0.375
+
+t_fibula_basketball <- body_count_year_basket %>% 
+  filter(body_part_2 == "Fibula" & season > 2006)
+
+mean(t_fibula_basketball$Incidence, na.rm = T) #0.2755556
+
+t_calf_basketball <- body_count_year_basket %>% 
+  filter(body_part_2 == "Calf" & season > 2006) 
+
+mean(t_calf_basketball$Incidence, na.rm = T) #2.259231
+
+t_knee_basketball <- body_count_year_basket %>% 
+  filter(body_part_2 == "Knee" & season > 2006)
+
+mean(t_knee_basketball$Incidence, na.rm = T) #13.37462
+
+t_hamstring_basketball <- body_count_year_basket %>% 
+  filter(body_part_2 == "Hamstring" & season > 2006)
+
+mean(t_hamstring_basketball$Incidence, na.rm = T) #3.176923
+
+t_quadricep_basketball <- body_count_year_basket %>%
+  filter(body_part_2 == "Quadricep" & season > 2006)
+
+mean(t_quadricep_basketball$Incidence, na.rm = T) #1.49
+
+t_thigh_basketball <- body_count_year_basket %>% 
+  filter(body_part_2 == "Thigh" & season > 2006)
+
+mean(t_thigh_basketball$Incidence, na.rm = T) #0.7846154
+
+t_adductor_basketball <- body_count_year_basket %>% 
+  filter(body_part_2 == "Adductor" & season > 2006)
+
+mean(t_adductor_basketball$Incidence, na.rm = T) #2.6
+
+t_abductor_basketball <- body_count_year_basket %>% 
+  filter(body_part_2 == "Abductor" & season > 2006)
+
+mean(t_abductor_basketball$Incidence, na.rm = T) #0.4275
+
+t_patella_basketball <- body_count_year_basket %>% 
+  filter(body_part_2 == "Patella" & season > 2006)
+
+mean(t_patella_basketball$Incidence, na.rm = T) #0.741
+
+t_hip_basketball <- body_count_year_basket %>%
+  filter(body_part_2 == "Hip" & season > 2006) 
+
+mean(t_hip_basketball$Incidence, na.rm = T) #2.868462
+
+t_gluteus_basketball <- body_count_year_basket %>% 
+  filter(body_part_2 == "Gluteus" & season > 2006)
+
+mean(t_gluteus_basketball$Incidence, na.rm = T) #0.19
+
+t_leg_basketball <- body_count_year_basket %>% 
+  filter(body_part_2 == "Leg" & season > 2006)
+
+mean(t_leg_basketball$Incidence, na.rm = T) #0.9591667
+
+Basketball_Injuries_Individual <- body_count_year_basket %>%
+  filter(body_part_2 == "Toe" | body_part_2 == "Foot" | body_part_2 == "Heel" | body_part_2 == "Ankle"
+         | body_part_2 == "Achilles" | body_part_2 == "Shin" | body_part_2 == "Fibula" | body_part_2 == "Calf" |
+           body_part_2 == "Knee" | body_part_2 == "Hamstring" | body_part_2 == "Quadricep" | body_part_2 == "Thigh" | 
+           body_part_2 == "Abductor" | body_part_2 == "Adductor" | body_part_2 == "Hip" |body_part_2 == "Patella" |
+           body_part_2 == "Gluteus" | body_part_2 == "Leg" 
+         &  season > 2006)
+
+#IMAGES
+base_precise <- all_sports_precise %>% 
+  filter(sport == "Baseball")
+
+#Baseball Data Analyses 
+
+body_count_year <- base_precise %>%
+  group_by(season) %>% 
+  count(body_part_2)
+
+
+body_count_year$body_part_2 <- toTitleCase(body_count_year$body_part_2)
+
+body_count_year$Incidence <- 0 
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2005, 
+                            round((n/1237)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2006, 
+                            round((n/1242)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2007, 
+                            round((n/1278)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2008, 
+                            round((n/1291)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2009, 
+                            round((n/1266)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2010, 
+                            round((n/1249)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2011, 
+                            round((n/1295)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2012, 
+                            round((n/1284)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2013, 
+                            round((n/1304)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2014, 
+                            round((n/1320)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2015, 
+                            round((n/1349)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2016, 
+                            round((n/1353)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2017, 
+                            round((n/1358)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2018, 
+                            round((n/1379)*100, digits = 2), 
+                            Incidence))
+
+body_count_year <- body_count_year %>% 
+  mutate(Incidence = ifelse(season == 2019, 
+                            round((n/1410)*100, digits = 2), 
+                            Incidence))
+
+
+body_count_year <- body_count_year %>%
+  filter(season > 0)
+
+body_count_year <- body_count_year %>% 
+  filter(body_part_2 != "")
+
+body_count_year$sport <- "Baseball"
+
+base_basket_combo_2 <-rbind(body_count_year, body_count_year_basket)
+
+mean_body_sport2 <- base_basket_combo_2 %>%
+  group_by(sport, body_part_2) %>% 
+  summarise_at(vars("Incidence"), mean)
+
+all_knee <- base_basket_combo_2 %>% 
+  filter(body_part_2 == "Knee")
+
+ggplot(all_knee,aes(season, Incidence, color = sport)) + 
+  geom_line(aes(group = sport)) + 
+  geom_point() +
+  labs(x = "Season", y = "Injury Incidence per 100 Players") +
+  ggtitle("Knee Time Loss Injury by Sport") +
+  scale_color_discrete(name = "Sport") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme_bw() 
+
+all_ankle <- base_basket_combo_2 %>% 
+  filter(body_part_2 == "Ankle")
+
+ggplot(all_ankle,aes(season, Incidence, color = sport)) + 
+  geom_line(aes(group = sport)) + 
+  geom_point() +
+  labs(x = "Season", y = "Injury Incidence per 100 Players") +
+  ggtitle("Ankle Time Loss Injury by Sport") +
+  scale_color_discrete(name = "Sport") + 
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme_bw()
+
+all_hip <- base_basket_combo_2 %>% 
+  filter(body_part_2 == "Hip")
+
+ggplot(all_hip,aes(season, Incidence, color = sport)) + 
+  geom_line(aes(group = sport)) + 
+  geom_point() +
+  labs(x = "Season", y = "Injury Incidence per 100 Players") +
+  ggtitle("Hip Time Loss Injury by Sport") +
+  scale_color_discrete(name = "Sport") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme_bw()
+
+summary(all_ankle$Incidence)
+summary(all_knee$Incidence)
+summary(all_hip$Incidence)
